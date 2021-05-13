@@ -1,5 +1,5 @@
 //=============================================================================
-// rpg_sprites.js v1.6.0
+// rpg_sprites.js v1.6.1
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -1433,7 +1433,6 @@ Sprite_Animation.prototype.updateCellSprite = function(sprite, cell) {
         sprite.scale.y = cell[3] / 100;
         sprite.opacity = cell[6];
         sprite.blendMode = cell[7];
-        p(sprite.blendMode)
         sprite.visible = true;
     } else {
         sprite.visible = false;
@@ -2536,6 +2535,7 @@ Spriteset_Battle.prototype.battleback2Name = function() {
 };
 
 Spriteset_Battle.prototype.overworldBattleback1Name = function() {
+    if ($gameMap.battleback1Name() === '') return '';
     if ($gamePlayer.isInVehicle()) {
         return this.shipBattleback1Name();
     } else {
@@ -2544,6 +2544,7 @@ Spriteset_Battle.prototype.overworldBattleback1Name = function() {
 };
 
 Spriteset_Battle.prototype.overworldBattleback2Name = function() {
+    if ($gameMap.battleback2Name() === '') return '';
     if ($gamePlayer.isInVehicle()) {
         return this.shipBattleback2Name();
     } else {

@@ -1,5 +1,5 @@
 //=============================================================================
-// rpg_managers.js v1.6.0
+// rpg_managers.js v1.6.1
 //=============================================================================
 
 //-----------------------------------------------------------------------------
@@ -882,7 +882,7 @@ ImageManager.loadNormalBitmap = function(path, hue) {
     var key = this._generateCacheKey(path, hue);
     var bitmap = this._imageCache.get(key);
     if (!bitmap) {
-        bitmap = Bitmap.load(path);
+        bitmap = Bitmap.load(decodeURIComponent(path));
         bitmap.addLoadListener(function() {
             bitmap.rotateHue(hue);
         });
@@ -1114,7 +1114,7 @@ AudioManager._meBuffer       = null;
 AudioManager._seBuffers      = [];
 AudioManager._staticBuffers  = [];
 AudioManager._replayFadeTime = 0.5;
-AudioManager._basePath           = 'audio/';
+AudioManager._path           = 'audio/';
 AudioManager._blobUrl        = null;
 
 Object.defineProperty(AudioManager, 'masterVolume', {
@@ -1195,7 +1195,7 @@ AudioManager.playBgm = function(bgm, pos) {
 
 AudioManager.playEncryptedBgm = function(bgm, pos) {
     var ext = this.audioFileExt();
-    var url = this._basePath + 'bgm/' + encodeURIComponent(bgm.name) + ext;
+    var url = this._path + 'bgm/' + encodeURIComponent(bgm.name) + ext;
     url = Decrypter.extToEncryptExt(url);
     Decrypter.decryptHTML5Audio(url, bgm, pos);
 };
@@ -1463,7 +1463,7 @@ AudioManager.makeEmptyAudioObject = function() {
 
 AudioManager.createBuffer = function(folder, name) {
     var ext = this.audioFileExt();
-    var url = this._basePath + folder + '/' + encodeURIComponent(name) + ext;
+    var url = this._path + folder + '/' + encodeURIComponent(name) + ext;
     if (this.shouldUseHtml5Audio() && folder === 'bgm') {
         if(this._blobUrl) Html5Audio.setup(this._blobUrl);
         else Html5Audio.setup(url);
@@ -2793,7 +2793,7 @@ function PluginManager() {
     throw new Error('This is a static class');
 }
 
-PluginManager._basePath         = 'js/plugins/';
+PluginManager._path         = 'js/plugins/';
 PluginManager._scripts      = [];
 PluginManager._errorUrls    = [];
 PluginManager._parameters   = {};
@@ -2824,7 +2824,7 @@ PluginManager.setParameters = function(name, parameters) {
 };
 
 PluginManager.loadScript = function(name) {
-    var url = this._basePath + name;
+    var url = this._path + name;
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;
